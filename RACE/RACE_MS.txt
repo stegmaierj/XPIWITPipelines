@@ -1,0 +1,9 @@
+--output C:/Users/dk3952/Downloads/RACEFINALTEST/Results/
+--input 0, C:/Users/dk3952/Downloads/RACEFINALTEST/Data/Membrane/Drosophila_c=00_t=0010.tif, 3, float
+--input 1, C:/Users/dk3952/Downloads/RACEFINALTEST/Data/Nuclei/Drosophila_c=02_t=0010.tif, 3, float
+--xml E:/Dropbox/Janelia/Publication/2014/RACEShareFolder/SubmissionPackage/DevCell_Revision/Software/RACE_MS.xml
+--seed 0
+--lockfile off
+--subfolder filterid, filtername
+--outputformat imagename, filtername
+--end

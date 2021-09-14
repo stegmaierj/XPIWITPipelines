@@ -1,0 +1,8 @@
+--output C:/Users/stegmaier/Downloads/Processing/
+--input 0, D:/Programming/XPIWITPipelines/Data/SyntheticMembranes.tif, 3, float
+--xml D:/Programming/XPIWITPipelines/Cellpose3D/Cellpose3D.xml
+--seed 0
+--lockfile off
+--subfolder filterid, filtername
+--outputformat imagename, filtername
+--end

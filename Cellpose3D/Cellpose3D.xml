@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpiwit>
+    <pipeline>
+        <item item_id="item_0009">
+            <name>VolumeBasedRegionRejectionFilter</name>
+            <description>Extracts the region properties of the image</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0003" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="BinaryInput" value="1" type="3" description="If input is binary, a label image is generated before extracting the region properties."/>
+                <parameter key="LabelOutput" value="0" type="3" description="Switch between geometry and statistics mode"/>
+                <parameter key="FullyConnected" value="1" type="3" description="Determines the connectivity model. Use FullyConnected = 1 for 8/26-neighborhood or to 0 for 4/6 neighborhood."/>
+                <parameter key="MinimumVolume" value="50000" type="2" description="All regions with smaller volume are suppressed. E.g. helpful for noise suppression in the EDM-based seed detection."/>
+                <parameter key="MaximumVolume" value="-1" type="2" description="All regions with larger volume are suppressed. E.g. helpful for background suppression."/>
+            </arguments>
+        </item>
+        <item item_id="item_0001">
+            <name>ImageReader</name>
+            <description>Reads image from disk</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="cmd" number_of_output="0"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="UseSeriesReader" value="0" type="3" description="Combine separate 2D images to one 3D stack. Drag&amp;drop first file of the series and substitute the series index by %0nd, with n being the number of digits."/>
+                <parameter key="SeriesMinIndex" value="0" type="2" description="Start index for the series reader"/>
+                <parameter key="SeriesMaxIndex" value="499" type="2" description="End index for the series reader"/>
+                <parameter key="SeriesIncrement" value="1" type="2" description="Index increment for the series reader"/>
+                <parameter key="SpacingX" value="1" type="1" description="Original spacing in the first dimension"/>
+                <parameter key="SpacingY" value="1" type="1" description="Original spacing in the second dimension"/>
+                <parameter key="SpacingZ" value="1" type="1" description="Original spacing in the third dimension"/>
+                <parameter key="InputMinimumValue" value="0" type="1" description="Minimum intensity value of the input image. Set to -1 for auto detection"/>
+                <parameter key="InputMaximumValue" value="255" type="1" description="Maximum intensity value of the input image. Set to -1 for auto detection"/>
+            </arguments>
+        </item>
+        <item item_id="item_0007">
+            <name>GradientVectorFlowTrackingImageFilter</name>
+            <description>Two or three channel filter that traces the gradient flow.</description>
+            <input number_images="4" number_meta="0">
+                <image item_id_ref="item_0005" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0004" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0006" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0009" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="NumIterations" value="25" type="2" description="The number of iterations (should be slightly larger than the radius of the biggest object)."/>
+                <parameter key="IgnoreBackground" value="1" type="3" description="If enabled, background pixels are ignored."/>
+                <parameter key="FullyConnected" value="1" type="3" description="If enabled, full neighborhood is used, otherwise only 4 / 18 connectivity."/>
+                <parameter key="ClosingRadius" value="3" type="2" description="Radius of the structuring element to be used to fuse nearby sinks."/>
+            </arguments>
+        </item>
+        <item item_id="item_0008">
+            <name>RescaleIntensityImageFilter</name>
+            <description>Rescales the image from min to max for integer types and from 0 to 1 for float types</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0001" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+            </arguments>
+        </item>
+        <item item_id="item_0003">
+            <name>BinaryThresholdImageFilter</name>
+            <description>Creates a binary image </description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="LowerThreshold" value="0.5" type="1" description="Defines the lower threshold"/>
+                <parameter key="UpperThreshold" value="1.0" type="1" description="Defines the upper threshold"/>
+                <parameter key="OutsideValue" value="0.0" type="1" description="Defines the value outside of the thresholds"/>
+                <parameter key="InsideValue" value="1.0" type="1" description="Defines the value within the thresholds"/>
+            </arguments>
+        </item>
+        <item item_id="item_0006">
+            <name>DiscreteGaussianImageFilter</name>
+            <description>Gaussian smothing filter. Filters the image with a gaussian kernel defined by variance.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="2" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="Variance" value="1.0" type="1" description="Variance of the gaussian kernel."/>
+                <parameter key="MaximumError" value="0.01" type="1" description="Maximum error of the gaussian function approximation."/>
+                <parameter key="MaximumKernelWidth" value="32" type="2" description="Maximum kernel size in pixel."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="Use the real spacing for the gaussian kernel creation."/>
+            </arguments>
+        </item>
+        <item item_id="item_0004">
+            <name>DiscreteGaussianImageFilter</name>
+            <description>Gaussian smothing filter. Filters the image with a gaussian kernel defined by variance.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="3" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="Variance" value="1.0" type="1" description="Variance of the gaussian kernel."/>
+                <parameter key="MaximumError" value="0.01" type="1" description="Maximum error of the gaussian function approximation."/>
+                <parameter key="MaximumKernelWidth" value="32" type="2" description="Maximum kernel size in pixel."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="Use the real spacing for the gaussian kernel creation."/>
+            </arguments>
+        </item>
+        <item item_id="item_0005">
+            <name>DiscreteGaussianImageFilter</name>
+            <description>Gaussian smothing filter. Filters the image with a gaussian kernel defined by variance.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="4" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="Variance" value="1.0" type="1" description="Variance of the gaussian kernel."/>
+                <parameter key="MaximumError" value="0.01" type="1" description="Maximum error of the gaussian function approximation."/>
+                <parameter key="MaximumKernelWidth" value="32" type="2" description="Maximum kernel size in pixel."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="Use the real spacing for the gaussian kernel creation."/>
+            </arguments>
+        </item>
+        <item item_id="item_0002">
+            <name>TorchModel</name>
+            <description>Apply specified Torch pipeline from a serialized model (*.pt).</description>
+            <input number_images="4" number_meta="0">
+                <image item_id_ref="item_0008" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0008" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0008" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0008" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="4" number_meta="0">
+                <image number="1"/>
+                <image number="2"/>
+                <image number="3"/>
+                <image number="4"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="NumInputChannels" value="1" type="2" description="The number of input channels."/>
+                <parameter key="UseGPU" value="1" type="3" description="Uses the GPU if possible. Defaults to CPU."/>
+                <parameter key="PatchWidth" value="256" type="2" description="Patch width used for processing. Set to -1 for complete image at once."/>
+                <parameter key="PatchHeight" value="256" type="2" description="Patch height used for processing. Set to -1 for complete image at once."/>
+                <parameter key="PatchDepth" value="64" type="2" description="Patch depth used for processing. Set to -1 for complete image at once."/>
+                <parameter key="PatchStride" value="0.5" type="1" description="Absolute (values &gt; 1) or patch-relative stride (values &lt; 1)."/>
+                <parameter key="ModelPath" value="D:/ScieboDrive/Projects/2021/Others/GradientVectorFlowTracking_EschweilerRWTH/Cellpose3D.pt" type="0" description="Absolute file path to the model file in *.pt format."/>
+            </arguments>
+        </item>
+    </pipeline>
+</xpiwit>

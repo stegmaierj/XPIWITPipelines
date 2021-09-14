@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpiwit>
+    <pipeline>
+        <item item_id="item_0003">
+            <name>LoGScaleSpaceMaximumProjectionFilter</name>
+            <description>Creates the maximum projection of multiple laplacian of gaussian filter results.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="2" number_meta="0">
+                <image number="1"/>
+                <image number="2"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="Step" value="1.0" type="1" description="Step width from min to max sigma."/>
+                <parameter key="MinSigma" value="5" type="1" description="Minimum sigma value."/>
+                <parameter key="MaxSigma" value="8" type="1" description="Maximum sigma value."/>
+                <parameter key="NormalizeAcrossScales" value="1" type="3" description="Normalize scales."/>
+                <parameter key="NormalizationExponent" value="2.0" type="1" description="Normalization exponent used for the scale space normalization."/>
+                <parameter key="WriteIntermediateResults" value="0" type="3" description="If enabled, the intermediate LoG filtered images are also saved (32bit)."/>
+            </arguments>
+        </item>
+        <item item_id="item_0002">
+            <name>RescaleIntensityImageFilter</name>
+            <description>Rescales the image from min to max for integer types and from 0 to 1 for float types</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0001" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+            </arguments>
+        </item>
+        <item item_id="item_0006">
+            <name>TwangSegmentation</name>
+            <description>Applys the TWANG segmentation method on the supplied image as described by Stegmaier et al. Requires seed points as meta information.</description>
+            <input number_images="1" number_meta="1">
+                <image item_id_ref="item_0002" number_of_output="1" type_number="2"/>
+                <meta item_id_ref="item_0005" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="32" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="MinimumRegionSigma" value="0.0" type="1" description="The minimum std. dev. within a cropped image region. Ignored in the current implementation."/>
+                <parameter key="Segment3D" value="1" type="3" description="Used to perform the segmentation either directly in 3D or to merge 2D segmentation results instead."/>
+                <parameter key="LabelOutput" value="1" type="3" description="If true, the filter directly produces a labeled output image with a unique id for each detected blob."/>
+                <parameter key="RandomLabels" value="0" type="3" description="If checked, random labels are used. Note that random labels might not be unique."/>
+                <parameter key="WriteRegionProps" value="1" type="3" description="If checked, the region props of extracted blobs are exported to a cvs file."/>
+                <parameter key="MinimumWeightedGradientNormalDotProduct" value="0.6" type="1" description="Used to threshold the weighted dot product image."/>
+                <parameter key="WeightingKernelSizeMultiplicator" value="1.3" type="1" description="Used to scale the plateau region of the weighting kernel. If set to 1 the seed radius is used for the plateau radius."/>
+                <parameter key="WeightingKernelStdDev" value="1.0" type="1" description="Multiplier for the weighting kernel standard deviation."/>
+                <parameter key="GradientImageStdDev" value="3" type="1" description="The standard deviation of the Gaussian smoothing for smoother gradient directions."/>
+            </arguments>
+        </item>
+        <item item_id="item_0004">
+            <name>ExtractLocalExtremaFilter</name>
+            <description>Extracts all local extrema in an image.</description>
+            <input number_images="2" number_meta="0">
+                <image item_id_ref="item_0003" number_of_output="1" type_number="2"/>
+                <image item_id_ref="item_0003" number_of_output="2" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="KeyPointThreshold" value="-1" type="1" description="Minium value for extrema. If set to -1 an automatic selection based on the mean intensity and the intensity standard deviation are used."/>
+                <parameter key="StdDevMultiplicator" value="2.0" type="1" description="Multiplicator for the standard deviation. If automatic threshold selection is used, all seeds below (mu + StdDevMultiplicator * sigma) are rejected. "/>
+                <parameter key="QuantileThreshold" value="-1" type="1" description="If set to a value between 0 and 1, values within the respective quantile are rejected. I.e. if set to 0.95 all seeds with intensity in the 95% quantile are rejected."/>
+                <parameter key="KeyPointIndexOffset" value="0" type="2" description="Adds an offset to the coordinates of each seed point. E.g. useful for MATLABs 1-based indexing."/>
+                <parameter key="Neighborhood3D" value="1" type="2" description="0 to search in 2D only, 1 for searching in 3D only and 2 for searching in both 2D and 3D."/>
+                <parameter key="NeighborhoodRadius" value="3" type="2" description="The neighborhood radius of the local extrema search."/>
+                <parameter key="MinimumSeedCombinations" value="1" type="2" description="If detection in 2D and 3D is performed, seeds that were not multiply detected can be rejected."/>
+                <parameter key="FuseSeedPoints" value="1" type="3" description="Fuse extrema that lie within a small radius."/>
+                <parameter key="Remove2DSeedsTouching3DSeeds" value="0" type="3" description="Prefer 3D seeds over 2D seeds. I.e. all 2D seeds that lie within the seed radius of a 3D seed are rejected."/>
+                <parameter key="AllowMaximumPlateaus" value="1" type="3" description="Allow more than one point in a neighborhood to be an extremum."/>
+            </arguments>
+        </item>
+        <item item_id="item_0001">
+            <name>ImageReader</name>
+            <description>Reads image from disk</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="cmd" number_of_output="0"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="UseSeriesReader" value="0" type="3" description="Combine separate 2D images to one 3D stack. Drag&amp;drop first file of the series and substitute the series index by %0nd, with n being the number of digits."/>
+                <parameter key="SeriesMinIndex" value="0" type="2" description="Start index for the series reader"/>
+                <parameter key="SeriesMaxIndex" value="499" type="2" description="End index for the series reader"/>
+                <parameter key="SeriesIncrement" value="1" type="2" description="Index increment for the series reader"/>
+                <parameter key="SpacingX" value="1" type="1" description="Original spacing in the first dimension"/>
+                <parameter key="SpacingY" value="1" type="1" description="Original spacing in the second dimension"/>
+                <parameter key="SpacingZ" value="5" type="1" description="Original spacing in the third dimension"/>
+                <parameter key="InputMinimumValue" value="0" type="1" description="Minimum intensity value of the input image. Set to -1 for auto detection"/>
+                <parameter key="InputMaximumValue" value="65535" type="1" description="Maximum intensity value of the input image. Set to -1 for auto detection"/>
+            </arguments>
+        </item>
+        <item item_id="item_0005">
+            <name>ExtractSeedBasedIntensityWindowFilter</name>
+            <description>Extracts the mean intensity values of an image from provided seed locations.</description>
+            <input number_images="1" number_meta="1">
+                <image item_id_ref="item_0004" number_of_output="1" type_number="2"/>
+                <meta item_id_ref="item_0004" number_of_output="1" type_number="2"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="-1" type="2" description="Define the maximum number of concurrent threads. Setting it to -1 uses all available cores (default)."/>
+                <parameter key="Compression" value="1" type="3" description="If set to 1, compression is used for file saving."/>
+                <parameter key="Precision" value="16" type="2" description="Switch between uint8 and uint16 result image types."/>
+                <parameter key="Radius" value="2" type="2" description="The radius of the window to use for the mean intensity extraction."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="If enabled, the radius is scaled with respect to the image spacing."/>
+                <parameter key="UseImageSpacingForKeyPoints" value="1" type="3" description="If enabled, the keypoints are scaled with respect to the image spacing."/>
+                <parameter key="Threshold" value="-1" type="1" description="If larger than zero, used as a threshold, ie only seeds with larger values are saved."/>
+            </arguments>
+        </item>
+    </pipeline>
+</xpiwit>

@@ -1,0 +1,9 @@
+--output /Users/jstegmaier/Downloads/RACE_MacOSX_x64/Results/
+--input 0, /Users/jstegmaier/Downloads/RACE_MacOSX_x64/Data/Nuclei/Drosophila_c=02_t=0010.tif, 3, float
+--input 1, /Users/jstegmaier/Downloads/RACE_MacOSX_x64/Data/Membrane/Drosophila_c=00_t=0010.tif, 3, float
+--xml /Users/jstegmaier/Dropbox/Janelia/Publication/2014/RACEShareFolder/SubmissionPackage/DevCell_Revision/Software/RACE_NS.xml
+--seed 0
+--lockfile off
+--subfolder filterid, filtername
+--outputformat imagename, filtername
+--end

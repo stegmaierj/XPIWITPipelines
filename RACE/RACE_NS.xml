@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpiwit>
+    <pipeline>
+        <item item_id="item_0000">
+            <name>ImageReader</name>
+            <description>Reads image from disk</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="cmd" number_of_output="0"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="UseSeriesReader" value="0" type="3" description="Combine separate 2D images to one 3D stack. Drag&amp;drop first file of the series and substitute the series index by %0nd, with n being the number of digits."/>
+                <parameter key="SeriesMinIndex" value="0" type="2" description="Start index for the series reader"/>
+                <parameter key="SeriesMaxIndex" value="499" type="2" description="End index for the series reader"/>
+                <parameter key="SeriesIncrement" value="1" type="2" description="Index increment for the series reader"/>
+                <parameter key="SpacingX" value="1" type="1" description="Original spacing in the first dimension"/>
+                <parameter key="SpacingY" value="1" type="1" description="Original spacing in the second dimension"/>
+                <parameter key="SpacingZ" value="5" type="1" description="Original spacing in the third dimension"/>
+                <parameter key="InputMaximumValue" value="65535" type="1"/>
+            </arguments>
+        </item>
+        <item item_id="item_0016">
+            <name>ImageReader</name>
+            <description>Reads image from disk</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="cmd" number_of_output="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="UseSeriesReader" value="0" type="3" description="Combine separate 2D images to one 3D stack. Drag&amp;drop first file of the series and substitute the series index by %0nd, with n being the number of digits."/>
+                <parameter key="SeriesMinIndex" value="0" type="2" description="Start index for the series reader"/>
+                <parameter key="SeriesMaxIndex" value="499" type="2" description="End index for the series reader"/>
+                <parameter key="SeriesIncrement" value="1" type="2" description="Index increment for the series reader"/>
+                <parameter key="SpacingX" value="1" type="1" description="Original spacing in the first dimension"/>
+                <parameter key="SpacingY" value="1" type="1" description="Original spacing in the second dimension"/>
+                <parameter key="SpacingZ" value="1" type="1" description="Original spacing in the third dimension"/>
+                <parameter key="InputMaximumValue" value="65535" type="1"/>
+            </arguments>
+        </item>
+        <item item_id="item_0001">
+            <name>RescaleIntensityImageFilter</name>
+            <description>Rescales the image from min to max for integer types and from 0 to 1 for float types</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0016" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+            </arguments>
+        </item>
+        <item item_id="item_0017">
+            <name>LoGScaleSpaceMaximumProjectionFilter</name>
+            <description>Creates the maximum projection of multiple laplacian of gaussian filter results.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0000" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="2" number_meta="0">
+                <image number="1"/>
+                <image number="2"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Step" value="1.0" type="1" description="Step width from min to max sigma."/>
+                <parameter key="MinSigma" value="4" type="1" description="Minimum sigma value."/>
+                <parameter key="MaxSigma" value="4" type="1" description="Maximum sigma value."/>
+                <parameter key="NormalizeAcrossScales" value="1" type="3" description="Normalize scales."/>
+            </arguments>
+        </item>
+        <item item_id="item_0002">
+            <name>MedianImageFilter</name>
+            <description>Median Filter. Filters the input with a median kernel.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0001" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Radius" value="2" type="2" description="Radius of the filter kernel (manhattan distance)."/>
+                <parameter key="FilterMask3D" value="0" type="3" description="Use a 3D kernel."/>
+            </arguments>
+        </item>
+        <item item_id="item_0019">
+            <name>InvertIntensityImageFilter</name>
+            <description>Invert the intensity of an image.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0004" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Maximum" value="-1" type="1" description="Maximum, -1 for automatic"/>
+            </arguments>
+        </item>
+        <item item_id="item_0003">
+            <name>BinaryThresholdImageFilter</name>
+            <description>Creates a binary image </description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="LowerThreshold" value="0" type="1" description="Defines the lower threshold"/>
+                <parameter key="UpperThreshold" value="1.0" type="1" description="Defines the upper threshold"/>
+                <parameter key="OutsideValue" value="0.0" type="1" description="Defines the value outside of the thresholds"/>
+                <parameter key="InsideValue" value="1.0" type="1" description="Defines the value within the thresholds"/>
+            </arguments>
+        </item>
+        <item item_id="item_0004">
+            <name>BinaryThresholdImageFilter</name>
+            <description>Creates a binary image </description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0017" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="LowerThreshold" value="0.0008" type="1" description="Defines the lower threshold"/>
+                <parameter key="UpperThreshold" value="1.0" type="1" description="Defines the upper threshold"/>
+                <parameter key="OutsideValue" value="0.0" type="1" description="Defines the value outside of the thresholds"/>
+                <parameter key="InsideValue" value="1.0" type="1" description="Defines the value within the thresholds"/>
+            </arguments>
+        </item>
+        <item item_id="item_0005">
+            <name>SignedMaurerDistanceMapImageFilter</name>
+            <description>This filter computes the distance map of the input image as an approximation with pixel accuracy to the Euclidean distance.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0019" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="BackgroundValue" value="0" type="3" description="Set background value."/>
+                <parameter key="InsideIsPositive" value="0" type="3" description="Set if inside value is positive."/>
+                <parameter key="UseSquareDistance" value="1" type="3" description="Set to use the square of the distance."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="Set to use the image spacing."/>
+                <parameter key="PositiveValuesOnly" value="1" type="3" description="Discard negative values and only consider positive ones."/>
+                <parameter key="SliceBySlice" value="0" type="3" description="If enabled, the distance map is calcualted for each slice individually."/>
+                <parameter key="NormalizeResult" value="0" type="3" description="If enabled, the output image is scaled to the range [0, 1]. Else the true (squared) distances values are preserved."/>
+            </arguments>
+        </item>
+        <item item_id="item_0006">
+            <name>HMaximaImageFilter</name>
+            <description>Supresses local maxima for which the height is smaller than the specified baseline</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0005" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Height" value="20" type="1" description="The height above which maxima should be searched."/>
+                <parameter key="FullyConnected" value="0" type="3" description="Fully connected flag uses 8/26 neighborhood if enabled."/>
+            </arguments>
+        </item>
+        <item item_id="item_0007">
+            <name>SubtractImageFilter</name>
+            <description>Pixel-wise subtraction of two images.</description>
+            <input number_images="2" number_meta="0">
+                <image item_id_ref="item_0005" number_of_output="1" type_number="1"/>
+                <image item_id_ref="item_0006" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+            </arguments>
+        </item>
+        <item item_id="item_0008">
+            <name>BinaryThresholdImageFilter</name>
+            <description>Creates a binary image </description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0007" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="LowerThreshold" value="1e-05" type="1" description="Defines the lower threshold"/>
+                <parameter key="UpperThreshold" value="65535" type="1" description="Defines the upper threshold"/>
+                <parameter key="OutsideValue" value="0.0" type="1" description="Defines the value outside of the thresholds"/>
+                <parameter key="InsideValue" value="1.0" type="1" description="Defines the value within the thresholds"/>
+            </arguments>
+        </item>
+        <item item_id="item_0009">
+            <name>BinaryImageToLabelMapFilter</name>
+            <description>Transforms binary image to a label map and creates the label image</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0008" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="FullyConnected" value="1" type="3" description="If turned on, 8/26 neighborhood is used, else 4/6 neighborhood is used for 2D/3D images, respectively."/>
+                <parameter key="InputForegroundValue" value="1" type="1" description="The input foreground value. Usually this should be set to 1."/>
+                <parameter key="OutputBackgroundValue" value="0" type="1" description="The output background value. Usually this should be set to 0."/>
+            </arguments>
+        </item>
+        <item item_id="item_0010">
+            <name>HessianToObjectnessMeasureImageFilter</name>
+            <description>Uses the hessian eigenvalues to enhance specific structures in the image.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0002" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Sigma" value="2" type="1" description="Variance used by the Hessian calculation."/>
+                <parameter key="Alpha" value="1.0" type="1" description="Alpha parameter for the objectness filter."/>
+                <parameter key="Beta" value="1.0" type="1" description="Beta parameter for the objectness filter."/>
+                <parameter key="Gamma" value="0.1" type="1" description="Gamma parameter for the objectness filter."/>
+                <parameter key="ScaleObjectnessMeasure" value="0" type="3" description="Scales the object measure if set on."/>
+                <parameter key="ObjectDimension" value="2" type="2" description="Set the dimension of the objects about to be emphasized."/>
+                <parameter key="BrightObject" value="1" type="3" description="Gamma parameter for the objectness filter."/>
+                <parameter key="FilterMask3D" value="1" type="3" description="Enhance objects in a slice by slice manner."/>
+            </arguments>
+        </item>
+        <item item_id="item_0011">
+            <name>FastMorphologicalOperatorsFilter</name>
+            <description>Morphological operators with masking and without slow border handling.</description>
+            <input number_images="2" number_meta="0">
+                <image item_id_ref="item_0010" number_of_output="1" type_number="1"/>
+                <image item_id_ref="item_0003" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Radius" value="1" type="2" description="Radius of the filter kernel."/>
+                <parameter key="MinRadius" value="1" type="2" description="Minimum radius of the filter kernel (UseRadiusRange has to be enabled for this parameter to work)."/>
+                <parameter key="MaxRadius" value="4" type="2" description="Maximum radius of the filter kernel (UseRadiusRange has to be enabled for this parameter to work)."/>
+                <parameter key="FilterMask3D" value="0" type="3" description="Use a 3D kernel."/>
+                <parameter key="UseRadiusRange" value="1" type="3" description="Iteratively apply different radii to close the image (Used e.g. for viscous watershed)."/>
+                <parameter key="UseImageSpacing" value="1" type="3" description="If enabled, the image spacing will be used to scale the radii in the different dimensions."/>
+                <parameter key="IgnoreBorderRegions" value="0" type="3" description="If enabled, border regions will be skipped, otherwise the Neumann boundary condition (closest valid pixel value) is used."/>
+                <parameter key="Type" value="2" type="2" description="The operation to use: EROSION = 0, DILATION = 1, CLOSING = 2, OPENING = 3, ASF OPENING-&gt;CLOSING: 4, ASF CLOSING-&gt;OPENING: 5."/>
+            </arguments>
+        </item>
+        <item item_id="item_0012">
+            <name>MorphologicalWatershedFilter</name>
+            <description>Morphological Watershed Filter. Performs watershed segmentation of the input image.</description>
+            <input number_images="1" number_meta="0">
+                <image item_id_ref="item_0011" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="0">
+                <image number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="0" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="Level" value="39" type="1" description="Initial level of the watershed."/>
+                <parameter key="MarkWatershedLine" value="1" type="3" description="If enabled, watershed lines are highlighted by zero values."/>
+                <parameter key="Segment3D" value="0" type="3" description="Use a 3D watershed segmentation."/>
+                <parameter key="FullyConnected" value="0" type="3" description="If enabled 8-neighborhood (2D) or 27-neighborhood (3D) is used."/>
+                <parameter key="DebugOutput" value="0" type="3" description="If enabled some debug output is printed."/>
+                <parameter key="MinSlice" value="0" type="2" description="If positive, only the slices larger than this number are processed."/>
+                <parameter key="MaxSlice" value="100000" type="2" description="If positive, only the slices smaller than this number are processed."/>
+            </arguments>
+        </item>
+        <item item_id="item_0013">
+            <name>SliceBySliceExtractRegionPropsImageFilter</name>
+            <description>Rescales the intensity of an image separately for each slice.</description>
+            <input number_images="3" number_meta="0">
+                <image item_id_ref="item_0012" number_of_output="1" type_number="1"/>
+                <image item_id_ref="item_0010" number_of_output="1" type_number="1"/>
+                <image item_id_ref="item_0009" number_of_output="1" type_number="1"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="DebugOutput" value="0" type="3" description="If enabled, the debug output is written to the log file."/>
+                <parameter key="CalculateOrientedBoundingBox" value="0" type="3" description="If enabled, oriented bounding box will be calculated."/>
+                <parameter key="CalculateOrientedIntensityRegions" value="0" type="3" description="If enabled, oriented intensity regions will be calculated."/>
+                <parameter key="CalculateOrientedLabelRegions" value="0" type="3" description="If enabled, oriented label regions will be calculated."/>
+                <parameter key="CalculatePixelIndices" value="0" type="3" description="If enabled, pixel indices will be calculated."/>
+                <parameter key="BinaryInput" value="0" type="3" description="If enabled, binary input is initially transformed to a label image using connected components."/>
+                <parameter key="FullyConnected" value="0" type="3" description="If enabled, 8-neighborhood is used instead of 4 neighborhood for 2D images."/>
+                <parameter key="InputForegroundValue" value="1.0" type="1" description="The input foreground intensity value, usually set to 1."/>
+                <parameter key="OutputBackgroundValue" value="1.0" type="1" description="The output background intensity value, usually set to 0."/>
+                <parameter key="MinSlice" value="0" type="2" description="If positive, only the slices larger than this number are processed."/>
+                <parameter key="MaxSlice" value="100000" type="2" description="If positive, only the slices smaller than this number are processed."/>
+                <parameter key="MinimumSeedArea" value="1" type="2" description="If seeds are smaller than this value, no labeling is performed."/>
+                <parameter key="MaximumVolume" value="-1" type="2" description="If seeds are larger than this value, no labeling is performed."/>
+            </arguments>
+        </item>
+        <item item_id="item_0014">
+            <name>SliceBySliceIntersectionsImageFilter</name>
+            <description>Rescales the intensity of an image separately for each slice.</description>
+            <input number_images="1" number_meta="1">
+                <image item_id_ref="item_0012" number_of_output="1" type_number="1"/>
+                <meta item_id_ref="item_0013" number_of_output="1" type_number="0"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="DebugOutput" value="0" type="3" description="If enabled, debug output is printed to log."/>
+                <parameter key="MinSlice" value="0" type="2" description="If positive, only the slices larger than this number are processed."/>
+                <parameter key="MaxSlice" value="100000" type="2" description="If positive, only the slices smaller than this number are processed."/>
+            </arguments>
+        </item>
+        <item item_id="item_0015">
+            <name>SliceBySliceFusionFilter</name>
+            <description>Apply the seed based segment fusion. Requires SliceBySliceRegionProps and Intersections as meta information.</description>
+            <input number_images="1" number_meta="2">
+                <image item_id_ref="item_0012" number_of_output="1" type_number="1"/>
+                <meta item_id_ref="item_0013" number_of_output="1" type_number="0"/>
+                <meta item_id_ref="item_0014" number_of_output="1" type_number="0"/>
+            </input>
+            <output number_images="1" number_meta="1">
+                <image number="1"/>
+                <meta number="1"/>
+            </output>
+            <arguments>
+                <parameter key="WriteResult" value="1" type="3" description="Write output to disk"/>
+                <parameter key="WriteMetaData" value="1" type="3" description="Write meta data to disk"/>
+                <parameter key="MaxThreads" value="8" type="2" description="Define the maximum number of concurrent threads"/>
+                <parameter key="LinkThreshold" value="0.4" type="1" description="The minimum intersection similarity of two segments, 0.0 for no overlap, 1.0 for perfect overlap."/>
+                <parameter key="DebugOutput" value="0" type="3" description="If enabled, debug output will be written to the log file."/>
+                <parameter key="SingleSliceHeuristic" value="1" type="3" description="If enabled, the filter uses the slingle slice fusion heuristic, i.e., segments with less than minSlices slices are merged to their closest neighbour."/>
+                <parameter key="JaccardIndexHeuristic" value="0" type="3" description="If true, the filter uses the jaccard index based fusion heuristic with the specified maximum overlap size."/>
+                <parameter key="MinSlices" value="2" type="2" description="The minimum number of slices a segment should be build from. Only used in combination with the single slice heuristic."/>
+                <parameter key="UseRandomLabels" value="0" type="3" description="If enabled, final segmentation will be randomly labeled."/>
+                <parameter key="SimilarityFeature" value="6" type="2" description="Similarity feature to use. 6 = JaccardIndex, 7=MinimumRelativeOverlap."/>
+                <parameter key="MaxSize" value="1000" type="2" description="If larger than zero, segments 2D with more pixels than the specified size are discarded."/>
+                <parameter key="MinimumVolume" value="1500" type="2" description="If larger than zero, 3D segments with less pixels than the specified size are fused if the fusion does not violate the maximum volume."/>
+                <parameter key="MaximumVolume" value="4000" type="2" description="Largest allowed volume. Used to limit the fusion of segments that fall below the minimum volume."/>
+                <parameter key="MaxFusionOverlap" value="0" type="2" description="The number of slices segments are allowed to overlap for the jaccard index based fusion heuristic. This can be used to avoid branchings."/>
+                <parameter key="LabelFeature" value="14" type="2" description="The feature used to generate the label image. 14 = SeedLabel, 15 = JaccardIndexLabel."/>
+                <parameter key="ColorFeature" value="14" type="2" description="The feature used to generate the label image. 14 = SeedLabel, 15 = JaccardIndexLabel, 16 = SizeRatio."/>
+            </arguments>
+        </item>
+    </pipeline>
+</xpiwit>

@@ -1,0 +1,8 @@
+--output ../Examples/Results/
+--input 0, ../Examples/Data/3D/TestImage3D.tif, 3, float
+--xml /media/sf_D_DRIVE/Programming/XPIWIT/Release/XPIWIT_Ubuntu_x64_Emily/Examples/XMLPipelines/TWANGSegmentation.xml
+--seed 0
+--lockfile off
+--subfolder filterid, filtername
+--outputformat imagename, filtername
+--end
