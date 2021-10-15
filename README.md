@@ -7,7 +7,7 @@ Reference: Bartschat, A., Hübner, E., Reischl, M., Mikut, R., & Stegmaier, J. (
 
 This pipeline can be used to apply our 3D implementation of the Cellpose algorithm (originaly by Stringer et al., 2021). Make sure to use one of the latest XPIWIT releases, as the filter was only recently added. 
 
-- Input: The filter expects an input image, which can be either a 2D or a 3D image containing cellular membranes or cell nuclei (depending on which pretrained model you're using).
+- Input: The filter expects an input image, which can be either a 2D or a 3D image containing cellular membranes or cell nuclei (depending on which pretrained model you're using). An example image to produce a similar output as shown on the screenshot below can be found in `Data/SyntheticMembranes.tif`.
 - Output: Segmented image in the subfolder `*GradientVectorFlowTracking*`.
 * Parameters:
   * Filter `TorchModel`, Parameters `Patch*`: Width, height and depth used for patch-based processing. Note that the number has to be evenly divisible by 2 several times for the down-sampling path used for the Unet model. The patch stride controls the overlap between patches and avoids artifacs at patch boundaries if large enough.
