@@ -10,6 +10,8 @@ This pipeline can be used to apply our 3D implementation of the Cellpose algorit
 - Input: The filter expects an input image, which can be either a 2D or a 3D image containing cellular membranes or cell nuclei (depending on which pretrained model you're using).
 - Output: Segmented image in the subfolder `*GradientVectorFlowTracking*`.
 - Parameters:
+* Filter `TorchModel`, Parameters `Patch*`: Width, height and depth used for patch-based processing. Note that the number has to be evenly divisible by 2 several times for the down-sampling path used for the Unet model. The patch stride controls the overlap between patches and avoids artifacs at patch boundaries if large enough.
+  * Filter `TorchModel`, Parameter `ModelPath`: Absolute path to the model to use for prediction. This should be a `*.pt` file containing a pretrained model suitable for the selected segmentation task. A demo model for Cellpose3D that was trained on confocal microscopy images of membrane labeled *A. thaliana* are provided next to the XPIWIT pipeline files in this repository.
 > - Filter `BinaryThreshold`, Parameter `LowerThreshold`: The probability at which the background prediction should be thresholded. Values below this threshold are background and values above it are considered as foreground. Note that the remaining filters only operate on the foreground region, i.e., potentially decrease the value if you find objects disappearing. 
 
 > - Filter `DiscreteGaussian`, Parameter `Variance`: The variance parameter can be used to smooth the predicted gradient fields. Usually, no changes required but if you find the gradient fields to be very noisy, this can improve convergence.
