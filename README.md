@@ -5,7 +5,7 @@ Reference: Bartschat, A., Hübner, E., Reischl, M., Mikut, R., & Stegmaier, J. (
 
 # Cellpose3D
 
-This pipeline can be used to apply our 3D implementation of the Cellpose algorithm (originaly by Stringer et al., 2021). Make sure to use one of the latest XPIWIT releases, as the filter was only recently added. 
+This pipeline can be used to apply our 3D implementation of the Cellpose algorithm (originaly by [Stringer et al., 2021](https://doi.org/10.1038/s41592-020-01018-x)). Make sure to use one of the latest XPIWIT releases, as the filter was only recently added. 
 
 - Input: The filter expects an input image, which can be either a 2D or a 3D image containing cellular membranes or cell nuclei (depending on which pretrained model you're using). An example image to produce a similar output as shown on the screenshot below can be found in `Data/SyntheticMembranes.tif`.
 - Output: Segmented image in the subfolder `*GradientVectorFlowTracking*`.
