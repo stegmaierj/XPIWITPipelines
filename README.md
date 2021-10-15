@@ -24,7 +24,7 @@ This pipeline can be used to apply our 3D implementation of the Cellpose algorit
 
 ![Cellpose3D Pipeline](Data/Screenshots/Cellpose3D.png "Overview of the cellpose 3D approach.")
 
-Reference: Eschweiler, D., & Stegmaier, J. (2021). Robust 3D Cell Segmentation: Extending the View of Cellpose. arXiv preprint arXiv:2105.00794.
+Reference: Eschweiler, D., Smith, R. S. & Stegmaier, J. (2021). Robust 3D Cell Segmentation: Extending the View of Cellpose. arXiv preprint arXiv:2105.00794.
 
 # TWANG
 
